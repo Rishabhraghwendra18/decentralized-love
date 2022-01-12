@@ -1,6 +1,18 @@
+import {ethers} from 'ethers';
+import messageContractAbi from '../Message.json';
 import etherumLogo from "../ethereum.svg";
+import { useState } from 'react';
 
-export default function HeroSection() {
+function contractConnectionSetup(provider) {
+  const contractAddress = '0x79dECfDE2Ae05aceE5fD9A376cca5a70FE4a2584';
+  return new ethers.Contract(contractAddress,messageContractAbi.abi,provider);
+}
+export default function HeroSection({provider,setMessage}) {
+  const [receiverAddress,setReceiverAddress] =  useState(null);
+  const [senderMessage,setSenderMessage] = useState(null);
+  const contract = contractConnectionSetup(provider);
+  contract.retrieve_message('0xA2bbE509D55a7F5623fB8e820c5BC0B93dC57750')
+  .then(e=>console.log("mssg: ",e));
   return (
     <div className="bg-pink flex flex-row items-center p-2">
       <div className="basis-full">
@@ -12,22 +24,35 @@ export default function HeroSection() {
             <input
               placeholder="0x43a90..."
               className="border-solid border-4 border-[#ededed] rounded-lg"
+              onChange={e=>setReceiverAddress(e.target.value)}
             />
             <div className="text-xl font-medium text-black">Message</div>
             <textarea
               className="border-solid border-4 border-[#ededed] rounded-lg"
               placeholder="Hello, How are you..."
+              onChange={e=>setSenderMessage(e.target.value)}
             ></textarea>
             <div>
               <button
                 type="button"
-                class="py-2 px-3 bg-indigo text-white text-sm font-semibold rounded-md shadow focus:outline-none"
+                className="py-2 px-3 bg-indigo text-white text-sm font-semibold rounded-md shadow focus:outline-none"
+                onClick={async ()=> setMessage(await contract.retrieve_message('0xA2bbE509D55a7F5623fB8e820c5BC0B93dC57750'))}
               >
                 Check Message
               </button>
               <button
                 type="button"
-                class="py-2 px-3 bg-[#DCB5A6] mx-1.5 text-black text-sm font-semibold rounded-md shadow focus:outline-none"
+                className="py-2 px-3 bg-[#DCB5A6] mx-1.5 text-black text-sm font-semibold rounded-md shadow focus:outline-none"
+                onClick={async ()=>{
+                  if(!receiverAddress || !senderMessage) alert("Make sure you have enteried values in both fileds, wallet address and Message box")
+                  try {
+                    const contractWithSigner = contract.connect(provider.getSigner());
+                    await contractWithSigner.send_message(receiverAddress,senderMessage);
+                    alert("Your message is successfully send!!")
+                  } catch (e) {
+                    console.log("error while sending message",e);
+                  }
+                }}
               >
                 Send Message
               </button>

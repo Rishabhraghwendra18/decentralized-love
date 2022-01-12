@@ -7,11 +7,11 @@ function MessageTemplate({text}) {
     </div>
   );
 }
-export default function Bottom() {
+export default function Bottom({message}) {
   return (
     <div className="flex flex-col items-center p-2 gap-y-2">
       <h1 className="text-3xl font-medium text-black">Your Messages</h1>
-      <MessageTemplate text={'Hello'}></MessageTemplate>
+      {message ? <MessageTemplate text={message}></MessageTemplate> : null}
     </div>
   );
 }
