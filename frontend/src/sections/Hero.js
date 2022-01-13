@@ -4,18 +4,16 @@ import etherumLogo from "../ethereum.svg";
 import { useState } from 'react';
 
 function contractConnectionSetup(provider) {
-  const contractAddress = '0x79dECfDE2Ae05aceE5fD9A376cca5a70FE4a2584';
+  const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
   return new ethers.Contract(contractAddress,messageContractAbi.abi,provider);
 }
 export default function HeroSection({provider,setMessage}) {
   const [receiverAddress,setReceiverAddress] =  useState(null);
   const [senderMessage,setSenderMessage] = useState(null);
   const contract = contractConnectionSetup(provider);
-  contract.retrieve_message('0xA2bbE509D55a7F5623fB8e820c5BC0B93dC57750')
-  .then(e=>console.log("mssg: ",e));
   return (
-    <div className="bg-pink flex flex-row items-center p-2">
-      <div className="basis-full">
+    <div className="bg-pink flex flex-row items-center p-2 hero_div">
+      <div className="basis-full m-1">
         <div className="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg flex items-center space-x-4">
           <div className="grid gap-4">
             <div className="text-xl font-medium text-black">
@@ -35,14 +33,14 @@ export default function HeroSection({provider,setMessage}) {
             <div>
               <button
                 type="button"
-                className="py-2 px-3 bg-indigo text-white text-sm font-semibold rounded-md shadow focus:outline-none"
-                onClick={async ()=> setMessage(await contract.retrieve_message('0xA2bbE509D55a7F5623fB8e820c5BC0B93dC57750'))}
+                className="py-2 px-3 bg-indigo text-white text-sm font-semibold rounded-md shadow focus:outline-none shadow-lg hover:shadow-indigo"
+                onClick={async ()=> setMessage(await contract.retrieve_message(receiverAddress))}
               >
                 Check Message
               </button>
               <button
                 type="button"
-                className="py-2 px-3 bg-[#DCB5A6] mx-1.5 text-black text-sm font-semibold rounded-md shadow focus:outline-none"
+                className="py-2 px-3 bg-[#DCB5A6] mx-1.5 text-black text-sm font-semibold rounded-md shadow focus:outline-none shadow-lg hover:shadow-[#E89F85]"
                 onClick={async ()=>{
                   if(!receiverAddress || !senderMessage) alert("Make sure you have enteried values in both fileds, wallet address and Message box")
                   try {
@@ -60,12 +58,12 @@ export default function HeroSection({provider,setMessage}) {
           </div>
         </div>
       </div>
-      <div className="basis-full">
+      <div className="basis-full m-1 about_div">
         <div className="bg-pink grid gap-3 items-center justify-items-center">
-          <h1 className="text-3xl font-medium text-black">
+          <h1 className="text-3xl font-medium text-black pl-2">
             Send Love to your Love!!
           </h1>
-          <p className="text-xl font-medium text-black">
+          <p className="text-xl font-medium text-black pl-2">
             Just paste in your love wallet address , type some message and hit
             send
           </p>

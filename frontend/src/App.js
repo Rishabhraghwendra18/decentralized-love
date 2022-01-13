@@ -1,6 +1,5 @@
 import { ethers } from 'ethers'
 import { useState } from 'react';
-import "./App.css";
 import Navbar from './components/Navbar';
 import Hero from './sections/Hero';
 import Bottom from "./sections/Bottom";
