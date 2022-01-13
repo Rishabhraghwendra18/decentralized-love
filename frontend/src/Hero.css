@@ -6,3 +6,8 @@
             margin-top: 5vh;
       }
 }
+@media (max-width:300px){
+      .about_div{
+            margin-top: 10vh;
+      }
+}
