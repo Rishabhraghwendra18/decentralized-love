@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import "../Hero.css";
 
+async function setUserWalletAddress(provider,setWalletAdress) {
+  setWalletAdress(await provider.getSigner().getAddress());
+}
 export default function Navbar({ provider }) {
   const [walletAddress, setWalletAdress] = useState(null);
   useEffect(() => {
-    setUserWalletAddress();
-  }, []);
-  async function setUserWalletAddress() {
-    setWalletAdress(await provider.getSigner().getAddress());
-  }
+    setUserWalletAddress(provider,setWalletAdress);
+  }, [provider]);
   return (
     <nav>
       <div className="absolute top-2 right-2 flex flex-row items-center gap-2 flex-wrap-reverse">
@@ -18,8 +18,7 @@ export default function Navbar({ provider }) {
         <button
           onClick={async () => {
             await provider.send("eth_requestAccounts", []);
-            const signer = await provider.getSigner();
-            setUserWalletAddress();
+           setUserWalletAddress(provider,setWalletAdress);
           }}
           className="w-32 p-1 text-white rounded-full border-4 border-indigo bg-indigo text-ellipsis overflow-hidden shadow-lg hover:shadow-indigo"
         >
