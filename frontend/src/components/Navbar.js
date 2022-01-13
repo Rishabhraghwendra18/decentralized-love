@@ -3,7 +3,7 @@ import "../Hero.css";
 
 export default function Navbar({ provider }) {
   const [walletAddress, setWalletAdress] = useState(null);
-  useEffect(async () => {
+  useEffect(() => {
     setUserWalletAddress();
   }, []);
   async function setUserWalletAddress() {
