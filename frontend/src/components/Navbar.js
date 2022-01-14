@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
+import { ethers } from 'ethers';
 import "../Hero.css";
 
 async function setUserWalletAddress(provider,setWalletAdress) {
-  setWalletAdress(await provider.getSigner().getAddress());
+  if(provider!=null)
+    setWalletAdress(await provider.getSigner().getAddress());
 }
-export default function Navbar({ provider }) {
+export default function Navbar({ provider,setProvider }) {
   const [walletAddress, setWalletAdress] = useState(null);
   useEffect(() => {
     setUserWalletAddress(provider,setWalletAdress);
@@ -17,6 +19,12 @@ export default function Navbar({ provider }) {
         </div>
         <button
           onClick={async () => {
+            if(window.ethereum == undefined){
+              alert("Please install MetaMask extension and then connect it to the DApp");
+              return;
+            }
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            setProvider(provider);
             await provider.send("eth_requestAccounts", []);
            setUserWalletAddress(provider,setWalletAdress);
           }}

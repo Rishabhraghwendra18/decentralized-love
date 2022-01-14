@@ -10,7 +10,8 @@ function contractConnectionSetup(provider) {
 export default function HeroSection({provider,setMessage}) {
   const [receiverAddress,setReceiverAddress] =  useState(null);
   const [senderMessage,setSenderMessage] = useState(null);
-  const contract = contractConnectionSetup(provider);
+  let contract = null;
+  if(provider!=null) contract = contractConnectionSetup(provider);
   return (
     <div className="bg-pink flex flex-row items-center p-2 hero_div">
       <div className="basis-full m-1">
@@ -34,7 +35,15 @@ export default function HeroSection({provider,setMessage}) {
               <button
                 type="button"
                 className="py-2 px-3 bg-indigo text-white text-sm font-semibold rounded-md shadow focus:outline-none shadow-lg hover:shadow-indigo"
-                onClick={async ()=> setMessage(await contract.retrieve_message(receiverAddress))}
+                onClick={async ()=> {
+                  try {
+                    setMessage(await contract.retrieve_message(receiverAddress));
+                  }
+                  catch (_) {
+                    alert("Some Error occured. Make sure you have MetaMask extension installed and connected to DApp")
+                  }
+                }
+              }
               >
                 Check Message
               </button>
@@ -46,8 +55,9 @@ export default function HeroSection({provider,setMessage}) {
                   try {
                     const contractWithSigner = contract.connect(provider.getSigner());
                     await contractWithSigner.send_message(receiverAddress,senderMessage);
-                    alert("Your message is successfully send!!")
+                    alert("Your message is successfully send!! Please wait for your transcation to confirm on https://rinkeby.etherscan.io/")
                   } catch (e) {
+                    alert("Some Error occured. Make sure you have MetaMask extension installed and connected to DApp");
                     console.log("error while sending message",e);
                   }
                 }}
