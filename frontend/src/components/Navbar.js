@@ -13,7 +13,7 @@ export default function Navbar({ provider,setProvider }) {
   }, [provider]);
   return (
     <nav>
-      <div className="absolute top-2 right-2 flex flex-row items-center gap-2 flex-wrap-reverse">
+      <div className="fixed top-2 right-2 flex flex-row items-center gap-2 flex-wrap-reverse">
         <div className="p-1 border-2 border-[#afafaf] bg-[#afafaf] text-[#4c4a4a] text-xs rounded-full">
           Rinkeby Testnet Only
         </div>

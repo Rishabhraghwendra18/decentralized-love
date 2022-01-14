@@ -58,7 +58,7 @@ export default function HeroSection({provider,setMessage}) {
                     alert("Your message is successfully send!! Please wait for your transcation to confirm on https://rinkeby.etherscan.io/")
                   } catch (e) {
                     alert("Some Error occured. Make sure you have MetaMask extension installed and connected to DApp");
-                    console.log("error while sending message",e);
+                    console.warn("error while sending message",e);
                   }
                 }}
               >
