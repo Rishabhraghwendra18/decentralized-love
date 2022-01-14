@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './sections/Hero';
 import Bottom from "./sections/Bottom";
-import Footer from './components/Footer';
+// import Footer from './components/Footer';
 
 function App() {
   const [message,setMessage] = useState(null);

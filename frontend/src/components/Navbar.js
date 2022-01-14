@@ -19,7 +19,7 @@ export default function Navbar({ provider,setProvider }) {
         </div>
         <button
           onClick={async () => {
-            if(window.ethereum == undefined){
+            if(window.ethereum === undefined){
               alert("Please install MetaMask extension and then connect it to the DApp");
               return;
             }
